@@ -10,6 +10,7 @@ function App() {
 
   const val =  useStore().getState();
   console.log(val)
+  
   const dispatch = useDispatch();
   const num = useSelector((state) => state.red1.value );
 

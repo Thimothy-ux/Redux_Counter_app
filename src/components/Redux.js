@@ -1,11 +1,13 @@
-import { combineReducers, createStore } from "redux";
+import { applyMiddleware, combineReducers, createStore } from "redux";
+import logger from 'redux-logger'
 
 
 const initialArg = { value : 0  }
 
-
+// First Reducer 
 function reducerFn(state = initialArg , action)
 {
+
   switch( action.type )
   {
     
@@ -22,7 +24,7 @@ function reducerFn(state = initialArg , action)
 }
 
 
-
+// Second Reducer
 function reducerFn1(state = initialArg , action)
 {
   switch( action.type )
@@ -38,7 +40,21 @@ function reducerFn1(state = initialArg , action)
 
 
 
+// MiddleWare1
+const middleWare = (store) => (next) => (action) =>
+{
+  
+  console.log("Middleware_1 was excecuted..!");
+  next({ type : action.type });
+
+} 
+
+
+
+
+// RootReducer
 const reducer = combineReducers({red1 : reducerFn , red2 : reducerFn1});
 
-export const store = createStore(reducer);
+// Store 
+export const store = createStore(reducer,applyMiddleware(middleWare,logger));
 
