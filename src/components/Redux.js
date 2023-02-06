@@ -43,10 +43,14 @@ function reducerFn1(state = initialArg , action)
 // MiddleWare1
 const middleWare = (store) => (next) => (action) =>
 {
-  
-  console.log("Middleware_1 was excecuted..!");
-  next({ type : action.type });
-
+  // Differentating Reducer_1 and Reducer_2 here.
+  if (action.type === "Add") {
+    next({ type : action.type , value : store.getState().red1.value });
+  }
+  else
+  {
+    next({ type : action.type });
+  }
 } 
 
 
