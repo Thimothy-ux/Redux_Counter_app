@@ -1,5 +1,6 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import logger from 'redux-logger'
+import thunk from "redux-thunk";
 
 
 const initialArg = { value : 0  }
@@ -40,6 +41,25 @@ function reducerFn1(state = initialArg , action)
 
 
 
+
+
+// Third Reducer
+function reducerFn2(state = { type : "none" , movie_title : "None" } , action)
+{
+  switch( action.type )
+  { 
+    
+    case "Movie" :
+      return { movie_title : action.data.original_title};
+    default:
+      return state;
+
+  }
+}
+
+
+
+
 // MiddleWare1
 const middleWare = (store) => (next) => (action) =>
 {
@@ -47,9 +67,13 @@ const middleWare = (store) => (next) => (action) =>
   if (action.type === "Add") {
     next({ type : action.type , value : store.getState().red1.value });
   }
-  else
+  else if( action.type === "Movie" ) 
   {
-    next({ type : action.type });
+    next({ type : action.type , data : action.data } );
+  }
+  else 
+  {
+    next( action )
   }
 } 
 
@@ -57,8 +81,8 @@ const middleWare = (store) => (next) => (action) =>
 
 
 // RootReducer
-const reducer = combineReducers({red1 : reducerFn , red2 : reducerFn1});
+const reducer = combineReducers({red1 : reducerFn , red2 : reducerFn1 , red3 : reducerFn2 });
 
 // Store 
-export const store = createStore(reducer,applyMiddleware(middleWare,logger));
+export const store = createStore(reducer,applyMiddleware(middleWare,thunk,logger));
 
