@@ -1,6 +1,8 @@
+import { composeWithDevTools } from "@redux-devtools/extension";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import logger from 'redux-logger'
 import thunk from "redux-thunk";
+
 
 
 const initialArg = { value : 0  }
@@ -49,8 +51,12 @@ function reducerFn2(state = { type : "none" , movie_title : "None" } , action)
   switch( action.type )
   { 
     
-    case "Movie" :
-      return { movie_title : action.data.original_title};
+    case "REQUEST" :
+      return { ...state , loading : true };
+    case "SUCCESS" :
+      return { loading: false , movie_title : action.data.original_title }  
+    case "FAILURE":
+      return { loading: false , movie_title : action.data }
     default:
       return state;
 
@@ -84,5 +90,5 @@ const middleWare = (store) => (next) => (action) =>
 const reducer = combineReducers({red1 : reducerFn , red2 : reducerFn1 , red3 : reducerFn2 });
 
 // Store 
-export const store = createStore(reducer,applyMiddleware(middleWare,thunk,logger));
+export const store = createStore(reducer, composeWithDevTools(applyMiddleware(middleWare,thunk,logger)));
 
