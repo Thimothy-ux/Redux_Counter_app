@@ -14,7 +14,7 @@ function App() {
   // const val =  useStore().getState();
   // value: val.red1.value
   // console.log(val)
-   // console.log(useStore().getState())
+  //  console.log(useStore().getState())
 
    
   const dispatch = useDispatch();
